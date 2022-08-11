@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
-import 'package:weather/api_class/location_info.dart';
+import 'package:weather/model/location_info.dart';
 
 void main() {
   runApp(const MyApp());
