@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
+import 'package:weather/api_class/location_info.dart';
 
 void main() {
   runApp(const MyApp());
@@ -31,14 +32,21 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   String? _gelenCevap;
+  double? latitude = 40.2763;
+  double? longitude = 29.1035;
+  String? apiKey = 'a444db179d1c4f7f3b4169f8cc39f837';
+
+  LocationInfo? _locationInfo;
 
   Future<void> _incrementCounter() async {
-    final adres = Uri.parse(
-        'https://api.openweathermap.org/data/2.5/weather?lat=40.2763&lon=29.1035&appid=a444db179d1c4f7f3b4169f8cc39f837&units=metric');
+    var adres = Uri.parse(
+        'https://api.openweathermap.org/data/2.5/weather?lat=$latitude&lon=$longitude&appid=$apiKey&units=metric');
     Response cevap = await get(adres);
 
     if (cevap.statusCode == 200) {
       Map _gelenJson = jsonDecode(cevap.body);
+      _locationInfo = LocationInfo.fromJson(_gelenJson);
+
       _gelenCevap = _gelenJson['name'];
     } else {
       _gelenCevap = 'bağlantı hatası';
@@ -57,6 +65,7 @@ class _MyHomePageState extends State<MyHomePage> {
           const Text(
             'Gelen Cevap',
           ),
+          Text(_locationInfo?.name ?? 'name null'),
           Text(
             '$_gelenCevap',
             style: Theme.of(context).textTheme.headline4,
