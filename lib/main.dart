@@ -2,7 +2,9 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
-import 'package:weather/model/location_info.dart';
+import 'package:weather/model/weather_model.dart';
+import 'package:weather/screens/home_page.dart';
+import 'package:weather/screens/loading_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -16,7 +18,9 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData.dark(),
-      home: const MyHomePage(title: 'Api deneme Home Page'),
+      home: HomePage(),
+
+      // home: const MyHomePage(title: 'Api deneme Home Page'),
     );
   }
 }
@@ -34,20 +38,20 @@ class _MyHomePageState extends State<MyHomePage> {
   String? _gelenCevap;
   double? latitude = 40.2763;
   double? longitude = 29.1035;
-  String? apiKey = 'a444db179d1c4f7f3b4169f8cc39f837';
+  final String _apiKey = 'a444db179d1c4f7f3b4169f8cc39f837';
 
-  LocationInfo? _locationInfo;
+  Info? _dayInfo;
 
   Future<void> _incrementCounter() async {
     var adres = Uri.parse(
-        'https://api.openweathermap.org/data/2.5/weather?lat=$latitude&lon=$longitude&appid=$apiKey&units=metric');
+        'https://api.openweathermap.org/data/2.5/weather?lat=$latitude&lon=$longitude&appid=${_apiKey}&units=metric&lang=tr');
     Response cevap = await get(adres);
 
     if (cevap.statusCode == 200) {
       Map _gelenJson = jsonDecode(cevap.body);
-      _locationInfo = LocationInfo.fromJson(_gelenJson);
+      _dayInfo = Info.fromJson(_gelenJson);
 
-      _gelenCevap = _gelenJson['name'];
+      _gelenCevap = _gelenJson['weather'][0]['main'];
     } else {
       _gelenCevap = 'bağlantı hatası';
     }
@@ -65,7 +69,8 @@ class _MyHomePageState extends State<MyHomePage> {
           const Text(
             'Gelen Cevap',
           ),
-          Text(_locationInfo?.name ?? 'name null'),
+          Text(_dayInfo?.name ?? 'name null'),
+          Text(_dayInfo?.main?.temp.toString() ?? 'temp null'),
           Text(
             '$_gelenCevap',
             style: Theme.of(context).textTheme.headline4,
