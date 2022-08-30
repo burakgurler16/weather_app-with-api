@@ -1,12 +1,12 @@
 import 'dart:developer';
-import 'dart:ui';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-
 import 'package:flutter/material.dart';
 import 'package:weather/model/location.dart';
+import 'package:weather/screens/home_page.dart';
+import 'package:weather/utils/weather.dart';
 
 class LoadingPage extends StatefulWidget {
-  LoadingPage({Key? key}) : super(key: key);
+  const LoadingPage({Key? key}) : super(key: key);
 
   @override
   State<LoadingPage> createState() => _LoadingPageState();
@@ -27,10 +27,24 @@ class _LoadingPageState extends State<LoadingPage> {
     }
   }
 
+  void getWeatherData() async {
+    await getLocationData();
+    WeatherData weatherData = WeatherData(locationData: locationData);
+    await weatherData.getWeatherInfo();
+
+    if (weatherData.temperature == null || weatherData.currentCondition == null) {
+      log('apiden değer gelmiyor');
+    }
+
+    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) {
+      return HomePage(weatherData: weatherData);
+    }));
+  }
+
   @override
   void initState() {
     super.initState();
-    getLocationData();
+    getWeatherData();
   }
 
   @override

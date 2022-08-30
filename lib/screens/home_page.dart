@@ -3,14 +3,40 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:week_of_year/week_of_year.dart';
 
+import 'package:weather/utils/weather.dart';
+
 class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
+  HomePage({
+    Key? key,
+    required this.weatherData,
+  }) : super(key: key);
+
+  WeatherData weatherData;
 
   @override
   State<HomePage> createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
+  double? tepmperature;
+  String? locationPoint;
+  String? currentCondition;
+
+  void updateDisplayInfo(WeatherData weatherData) {
+    setState(() {
+      tepmperature = weatherData.temperature;
+      locationPoint = weatherData.locationPoint;
+      currentCondition = weatherData.currentCondition;
+    });
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    updateDisplayInfo(widget.weatherData);
+  }
+
   @override
   Widget build(BuildContext context) {
     const String _appTitle = 'WEEKFO';
@@ -25,11 +51,20 @@ class _HomePageState extends State<HomePage> {
           children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [Expanded(child: _InfoCard()), Expanded(child: _InfoCard())],
+              children: [
+                Expanded(
+                    child: _InfoCard(
+                  temp: tepmperature,
+                )),
+                Expanded(
+                    child: _InfoCard(
+                  temp: tepmperature,
+                ))
+              ],
             ),
-            Divider(),
-            _CurrentWeekCard(context),
-            Divider(),
+            const Divider(),
+            _currentWeekCard(context),
+            const Divider(),
             Expanded(child: _dayList())
           ],
         ),
@@ -37,7 +72,7 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Card _CurrentWeekCard(BuildContext context) {
+  Card _currentWeekCard(BuildContext context) {
     return Card(
       color: Colors.amber[200],
       child: Container(
@@ -75,11 +110,18 @@ class _HomePageState extends State<HomePage> {
   }
 }
 
-class _InfoCard extends StatelessWidget {
-  const _InfoCard({
+class _InfoCard extends StatefulWidget {
+  _InfoCard({
     Key? key,
+    required this.temp,
   }) : super(key: key);
+  double? temp;
 
+  @override
+  State<_InfoCard> createState() => _InfoCardState();
+}
+
+class _InfoCardState extends State<_InfoCard> {
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -91,7 +133,7 @@ class _InfoCard extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text('deneme card'),
+              Text('${widget.temp}'),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: const [
@@ -100,7 +142,7 @@ class _InfoCard extends StatelessWidget {
                     size: 50,
                     color: Colors.white,
                   ),
-                  Text('17°')
+                  Text('')
                 ],
               )
             ],

@@ -1,7 +1,7 @@
 class Info {
-  late final List<Weather>? weather;
-  late final Main? main;
-  late final String? name;
+  List<Weather>? weather;
+  Main? main;
+  String? name;
 
   Info.fromJson(Map json) {
     weather = (json['weather'] ?? []).map((e) => Weather.fromJson(e)).toList().cast<Weather>();
