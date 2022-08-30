@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
@@ -21,6 +22,8 @@ class _HomePageState extends State<HomePage> {
   double? tepmperature;
   String? locationPoint;
   String? currentCondition;
+
+  bool isLoading = false;
 
   void updateDisplayInfo(WeatherData weatherData) {
     setState(() {
@@ -98,16 +101,38 @@ class _HomePageState extends State<HomePage> {
 
   ListView _dayList() {
     return ListView(
+      padding: const EdgeInsets.symmetric(),
       children: const [
-        _DaysCard(day: 'pazartesi'),
-        _DaysCard(day: 'salı'),
-        _DaysCard(day: 'çarşamba'),
-        _DaysCard(day: 'perşembe'),
-        _DaysCard(day: 'cuma'),
-        _DaysCard(day: 'cumartesi'),
-        _DaysCard(day: 'pazar'),
+        _DaysButton(day: 'pazartesi'),
+        _DaysButton(day: 'salı'),
+        _DaysButton(day: 'çarşamba'),
+        _DaysButton(day: 'perşembe'),
+        _DaysButton(day: 'cuma'),
+        _DaysButton(day: 'cumartesi'),
+        _DaysButton(day: 'pazar'),
       ],
     );
+  }
+}
+
+class _DaysButton extends StatelessWidget {
+  const _DaysButton({
+    Key? key,
+    // required this.context,
+    required this.day,
+  }) : super(key: key);
+
+  // final BuildContext context;
+  final String day;
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+        width: MediaQuery.of(context).size.width,
+        child: CustomFootButton(
+          title: day,
+          onPressed: () {},
+        ));
   }
 }
 
@@ -178,5 +203,34 @@ class _DaysCard extends StatelessWidget {
         alignment: Alignment.center,
       ),
     );
+  }
+}
+
+class _ColorsUtility {
+  final Color daysColor = const Color.fromARGB(255, 194, 155, 39);
+  final Color white = Colors.white;
+}
+
+class _PaddingUtility {
+  final EdgeInsets normalPadding = const EdgeInsets.all(8.0);
+  final EdgeInsets normal2xPadding = const EdgeInsets.all(16.0);
+}
+
+class CustomFootButton extends StatelessWidget with _ColorsUtility, _PaddingUtility {
+  CustomFootButton({Key? key, required this.title, required this.onPressed}) : super(key: key);
+  final String title;
+  final void Function() onPressed;
+  @override
+  Widget build(BuildContext context) {
+    return ElevatedButton(
+        style: ElevatedButton.styleFrom(primary: daysColor, shape: const StadiumBorder()),
+        onPressed: onPressed,
+        child: Padding(
+          padding: normal2xPadding,
+          child: Text(
+            title,
+            style: Theme.of(context).textTheme.subtitle2?.copyWith(color: white, fontWeight: FontWeight.bold),
+          ),
+        ));
   }
 }

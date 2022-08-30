@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:weather/screens/loading_page.dart';
+import 'package:weather/screens/week_days/pazartesi.dart';
 import 'package:weather/utils/weather_data.dart';
 
 void main() {
@@ -14,8 +15,9 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData.dark(),
-      // home: const LoadingPage(),
-      home: WeatherData(title: 'deneme 2'),
+      home: const LoadingPage(),
+      // home: WeatherData(title: 'deneme 2'),
+      // home: CustomWidgetLearn(),
     );
   }
 }
