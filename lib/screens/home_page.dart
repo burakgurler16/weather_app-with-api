@@ -54,15 +54,16 @@ class _HomePageState extends State<HomePage> {
               children: [
                 Expanded(
                     child: _InfoCard(
-                  temp: tepmperature,
+                  currentCondition: currentCondition,
                 )),
                 Expanded(
                     child: _InfoCard(
-                  temp: tepmperature,
+                  currentCondition: currentCondition,
                 ))
               ],
             ),
             const Divider(),
+            Text(locationPoint.toString()),
             _currentWeekCard(context),
             const Divider(),
             Expanded(child: _dayList())
@@ -113,9 +114,11 @@ class _HomePageState extends State<HomePage> {
 class _InfoCard extends StatefulWidget {
   _InfoCard({
     Key? key,
-    required this.temp,
+    this.temp,
+    required this.currentCondition,
   }) : super(key: key);
   double? temp;
+  String? currentCondition;
 
   @override
   State<_InfoCard> createState() => _InfoCardState();
@@ -133,7 +136,7 @@ class _InfoCardState extends State<_InfoCard> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text('${widget.temp}'),
+              Text('currentCondition'),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: const [

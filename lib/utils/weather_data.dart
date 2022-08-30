@@ -34,10 +34,10 @@ class _WeatherDataState extends State<WeatherData> {
     }
   }
 
-  Future<Map?> weatherInfo() async {
+  Future<void> weatherInfo() async {
     setState(() async {
       var adres = Uri.parse(
-          'https://api.openweathermap.org/data/2.5/weather?lat=$latitude&lon=$longitude&appid=${_apiKey}&units=metric&lang=tr');
+          'https://api.openweathermap.org/data/2.5/weather?lat=$latitude&lon=$longitude&appid=$_apiKey&units=metric&lang=tr');
       Response cevap = await get(adres);
 
       if (cevap.statusCode == 200) {
@@ -53,7 +53,7 @@ class _WeatherDataState extends State<WeatherData> {
 
   Future<void> _incrementCounter() async {
     var adres = Uri.parse(
-        'https://api.openweathermap.org/data/2.5/weather?lat=$latitude&lon=$longitude&appid=${_apiKey}&units=metric&lang=tr');
+        'https://api.openweathermap.org/data/2.5/weather?lat=$latitude&lon=$longitude&appid=$_apiKey&units=metric&lang=tr');
     Response cevap = await get(adres);
 
     if (cevap.statusCode == 200) {

@@ -14,8 +14,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData.dark(),
-      home: LoadingPage(),
-      // home: WeatherData(title: 'deneme 2'),
+      // home: const LoadingPage(),
+      home: WeatherData(title: 'deneme 2'),
     );
   }
 }
