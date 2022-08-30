@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:weather/model/location.dart';
@@ -9,7 +8,6 @@ class WeatherData extends StatefulWidget {
   const WeatherData({Key? key, required this.title}) : super(key: key);
 
   final String title;
-
   @override
   State<WeatherData> createState() => _WeatherDataState();
 }
@@ -35,20 +33,18 @@ class _WeatherDataState extends State<WeatherData> {
   }
 
   Future<void> weatherInfo() async {
-    setState(() async {
-      var adres = Uri.parse(
-          'https://api.openweathermap.org/data/2.5/weather?lat=$latitude&lon=$longitude&appid=$_apiKey&units=metric&lang=tr');
-      Response cevap = await get(adres);
+    var adres = Uri.parse(
+        'https://api.openweathermap.org/data/2.5/weather?lat=$latitude&lon=$longitude&appid=$_apiKey&units=metric&lang=tr');
+    Response cevap = await get(adres);
 
-      if (cevap.statusCode == 200) {
-        Map gelenJson = jsonDecode(cevap.body);
-        dayInfo = Info.fromJson(gelenJson);
+    if (cevap.statusCode == 200) {
+      Map gelenJson = jsonDecode(cevap.body);
+      dayInfo = Info.fromJson(gelenJson);
 
-        gelenCevap = gelenJson['weather'][0]['main'];
-      } else {
-        gelenCevap = 'bağlantı hatası';
-      }
-    });
+      gelenCevap = gelenJson['weather'][0]['main'];
+    } else {
+      gelenCevap = 'bağlantı hatası';
+    }
   }
 
   Future<void> _incrementCounter() async {
@@ -64,7 +60,6 @@ class _WeatherDataState extends State<WeatherData> {
     } else {
       gelenCevap = 'bağlantı hatası';
     }
-    setState(() {});
   }
 
   @override
@@ -93,7 +88,7 @@ class _WeatherDataState extends State<WeatherData> {
         ],
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: weatherInfo,
+        onPressed: _incrementCounter,
         tooltip: 'Increment',
         child: const Icon(Icons.add),
       ),
